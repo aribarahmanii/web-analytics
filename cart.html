@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendWear - Cart</title>
+
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9S5TH4V60W"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-9S5TH4V60W', {
+  debug_mode: true
+});
+</script>
+
+<style>
+body{
+  font-family:Arial;
+  margin:0;
+  background:#f4f6f8;
+}
+
+/* Header */
+header{
+  background:#111;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+/* Container */
+.container{
+  max-width:800px;
+  margin:30px auto;
+  padding:20px;
+}
+
+/* Cart item */
+.cart-item{
+  background:white;
+  padding:15px;
+  margin-bottom:15px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Buttons */
+button{
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.remove-btn{background:#ff5252;color:white;}
+.home-btn{background:#555;color:white;margin-top:15px;}
+.checkout-btn{background:green;color:white;margin-top:15px;}
+
+/* Total */
+.total{
+  font-size:20px;
+  font-weight:bold;
+  margin-top:20px;
+  text-align:right;
+}
+
+.empty{
+  text-align:center;
+  font-size:18px;
+  margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Your Cart 🛒</h1>
+</header>
+
+<div class="container">
+
+<div id="cartItems"></div>
+
+<div class="total" id="totalBox"></div>
+
+<div style="text-align:center;">
+<button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+<br>
+<button class="home-btn" onclick="goHome()">Continue Shopping</button>
+</div>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("trendwear_cart")) || [];
+
+function renderCart(){
+  const cartItems = document.getElementById("cartItems");
+  const totalBox = document.getElementById("totalBox");
+
+  cartItems.innerHTML = "";
+
+  if(cart.length === 0){
+    cartItems.innerHTML = '<div class="empty">Your cart is empty 😢</div>';
+    totalBox.innerHTML = "";
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach((item,index)=>{
+    total += item.price;
+
+    cartItems.innerHTML += `
+      <div class="cart-item">
+        <div>
+          <h4>${item.name}</h4>
+          <p>₹${item.price}</p>
+        </div>
+        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+      </div>
+    `;
+  });
+
+  totalBox.innerHTML = "Total: ₹" + total;
+}
+
+/* Remove item */
+function removeItem(index){
+  gtag('event','remove_from_cart');
+  cart.splice(index,1);
+  localStorage.setItem("trendwear_cart", JSON.stringify(cart));
+  renderCart();
+}
+
+/* Checkout */
+function checkout(){
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+
+  gtag('event','checkout_click');
+  alert("Demo checkout — connect payment gateway later 💳");
+}
+
+/* Home */
+function goHome(){
+  gtag('event','continue_shopping_click');
+  window.location.href = "index.html";
+}
+
+renderCart();
+</script>
+
+</body>
+</html>
