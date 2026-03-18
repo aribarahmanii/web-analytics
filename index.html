@@ -5,12 +5,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrendWear</title>
-  <script defer 
+
+<!-- ✅ Plausible Analytics -->
+<script defer 
 data-domain="aribarahmanii.github.io" 
 src="https://plausible.io/js/script.js">
 </script>
-
-<style>
 
 <style>
 body{
@@ -101,7 +101,7 @@ button{
 
 <script>
 
-/* PRODUCTS WITH WORKING IMAGES */
+/* PRODUCTS */
 const products = [
 {
  id:"p1",
@@ -165,11 +165,19 @@ const product = products.find(p=>p.id===id);
 cart.push({...product, qty:1});
 localStorage.setItem("trendwear_cart", JSON.stringify(cart));
 updateCart();
+
+if(window.plausible){
+  plausible('AddToCart');
+}
+
 alert("Added to cart!");
 }
 
 /* BUY NOW */
 function buyNow(id){
+if(window.plausible){
+  plausible('BuyNow');
+}
 window.location.href = "checkout.html";
 }
 
@@ -194,7 +202,6 @@ p.name.toLowerCase().includes(value)
 renderProducts(filtered);
 }
 
-/
 /* INIT */
 renderProducts(products);
 updateCart();
