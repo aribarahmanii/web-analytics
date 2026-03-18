@@ -1,23 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Checkout</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - TrendWear</title>
+
+<style>
+body{font-family:Arial;margin:0;background:#f4f6f8}
+header{background:#111;color:white;padding:15px;text-align:center;font-size:22px}
+.container{max-width:500px;margin:40px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+input{width:100%;padding:12px;margin:10px 0;border-radius:6px;border:1px solid #ccc}
+button{width:100%;padding:12px;margin-top:15px;border:none;border-radius:8px;background:green;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{opacity:0.9}
+.summary{background:#f9f9f9;padding:15px;border-radius:8px;margin-bottom:20px}
+.row{display:flex;justify-content:space-between;margin:5px 0}
+.total{font-weight:bold;font-size:18px}
+</style>
 </head>
 
 <body>
 
-<h1>Checkout</h1>
+<header>Checkout 💳</header>
 
-<input placeholder="Name"><br><br>
-<input placeholder="Address"><br><br>
+<div class="container">
+
+<div class="summary" id="summary"></div>
+
+<h3>Shipping Details</h3>
+<input placeholder="Full Name">
+<input placeholder="Phone Number">
+<input placeholder="Address">
+<input placeholder="City">
 
 <button onclick="placeOrder()">Place Order</button>
 
+</div>
+
 <script>
-function placeOrder(){
-localStorage.removeItem("trendwear_cart");
-window.location.href="success.html";
+let cart = JSON.parse(localStorage.getItem("trendwear_cart")) || [];
+
+function renderSummary(){
+const box = document.getElementById("summary");
+let total = 0;
+let html = "<h3>Order Summary</h3>";
+
+cart.forEach(item=>{
+let itemTotal = item.price * (item.qty || 1);
+total += itemTotal;
+html += `<div class="row"><span>${item.name} x ${item.qty||1}</span><span>₹${itemTotal}</span></div>`;
+});
+
+html += `<hr><div class="row total"><span>Total</span><span>₹${total}</span></div>`;
+
+box.innerHTML = html;
 }
+
+function placeOrder(){
+if(cart.length===0){alert("Cart is empty!");return;}
+
+alert("Order placed successfully 🎉");
+localStorage.removeItem("trendwear_cart");
+window.location.href = "success.html";
+}
+
+renderSummary();
 </script>
 
 </body>
