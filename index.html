@@ -2,22 +2,9 @@
 <html lang="en">
 <head>
 
-<!-- Analytics -->
-<script defer data-domain="aribarahmanii.github.io/web-analytics" src="https://plausible.io/js/script.js"></script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrendWear - Home</title>
-
-<!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9S5TH4V60W"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-
-gtag('config', 'G-9S5TH4V60W');
-</script>
+<title>TrendWear</title>
 
 <style>
 body{
@@ -46,7 +33,6 @@ header{
   background:orange;
   padding:8px 14px;
   border-radius:20px;
-  font-weight:bold;
   cursor:pointer;
 }
 
@@ -55,7 +41,6 @@ header{
   width:100%;
   padding:10px;
   border:none;
-  outline:none;
   margin-top:10px;
 }
 
@@ -72,14 +57,8 @@ header{
   padding:15px;
   border-radius:12px;
   text-align:center;
-  transition:0.3s;
   box-shadow:0 2px 8px rgba(0,0,0,0.08);
   cursor:pointer;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 6px 18px rgba(0,0,0,0.15);
 }
 
 .card img{
@@ -91,74 +70,66 @@ header{
 
 /* Buttons */
 button{
-  padding:10px 14px;
-  margin:6px;
+  padding:10px;
+  margin:5px;
   border:none;
   border-radius:6px;
   cursor:pointer;
-  font-weight:bold;
 }
 
 .cart-btn{background:orange;color:white;}
 .buy-btn{background:green;color:white;}
-
-button:hover{
-  opacity:0.9;
-}
 </style>
+
 </head>
 
 <body>
 
 <header>
 <div class="logo">TrendWear</div>
-
-<div class="cart-box" onclick="goToCart()">
-🛒 Cart: <span id="cartCount">0</span>
-</div>
-
-<input class="search-bar" type="text" placeholder="Search products..." onkeyup="searchProducts(this.value)">
+<div class="cart-box" onclick="goToCart()">🛒 <span id="cartCount">0</span></div>
+<input class="search-bar" placeholder="Search..." onkeyup="searchProducts(this.value)">
 </header>
 
 <div class="products" id="productList"></div>
 
 <script>
 
-/* ✅ Product Data (REAL IMAGES) */
+/* PRODUCTS WITH WORKING IMAGES */
 const products = [
 {
  id:"p1",
  name:"Casual T-Shirt",
  price:799,
- img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+ img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
 },
 {
  id:"p2",
  name:"Winter Hoodie",
  price:1499,
- img:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf"
+ img:"https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400"
 },
 {
  id:"p3",
  name:"Blue Jeans",
  price:1999,
- img:"https://images.unsplash.com/photo-1582552938357-32b906df40cb"
+ img:"https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400"
 },
 {
  id:"p4",
  name:"Formal Shirt",
  price:1299,
- img:"https://images.unsplash.com/photo-1603252109303-2751441dd157"
+ img:"https://images.unsplash.com/photo-1603252109303-2751441dd157?w=400"
 }
 ];
 
-/* Save products globally */
+/* SAVE PRODUCTS */
 localStorage.setItem("products", JSON.stringify(products));
 
-/* Cart */
+/* CART */
 let cart = JSON.parse(localStorage.getItem("trendwear_cart")) || [];
 
-/* Render Products */
+/* RENDER PRODUCTS */
 function renderProducts(list){
 const container = document.getElementById("productList");
 container.innerHTML = "";
@@ -166,76 +137,48 @@ container.innerHTML = "";
 list.forEach(p=>{
 container.innerHTML += `
 <div class="card" onclick="openProduct('${p.id}')">
-<img loading="lazy" src="${p.img}">
+<img src="${p.img}" loading="lazy">
 <h3>${p.name}</h3>
 <p>₹${p.price}</p>
 
-<button class="cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}')">Add to Cart</button>
-<button class="buy-btn" onclick="event.stopPropagation(); buyNow('${p.id}')">Buy Now</button>
-</div>`;
+<button class="cart-btn" onclick="event.stopPropagation(); addToCart('${p.id}')">Add</button>
+<button class="buy-btn" onclick="event.stopPropagation(); buyNow('${p.id}')">Buy</button>
+</div>
+`;
 });
 }
 
-/* Update cart UI */
+/* UPDATE CART */
 function updateCart(){
 document.getElementById("cartCount").innerText = cart.length;
 }
 
-/* Add to Cart */
+/* ADD TO CART */
 function addToCart(id){
 const product = products.find(p=>p.id===id);
 cart.push({...product, qty:1});
-
 localStorage.setItem("trendwear_cart", JSON.stringify(cart));
 updateCart();
-
-/* GA4 */
-gtag('event','add_to_cart',{
-currency:'INR',
-value:product.price,
-items:[{
-item_id:product.id,
-item_name:product.name,
-price:product.price,
-quantity:1
-}]
-});
+alert("Added to cart!");
 }
 
-/* Buy Now */
+/* BUY NOW */
 function buyNow(id){
-const product = products.find(p=>p.id===id);
-
-gtag('event','purchase',{
-currency:'INR',
-value:product.price,
-items:[{
-item_id:product.id,
-item_name:product.name,
-price:product.price,
-quantity:1
-}]
-});
-
 window.location.href = "checkout.html";
 }
 
-/* Open Product Page */
+/* OPEN PRODUCT PAGE */
 function openProduct(id){
 window.location.href = "product.html?id=" + id;
 }
 
-/* Go to Cart */
+/* GO TO CART */
 function goToCart(){
 window.location.href = "cart.html";
 }
 
-/* Search with debounce */
-let timeout;
+/* SEARCH */
 function searchProducts(value){
-clearTimeout(timeout);
-
-timeout = setTimeout(()=>{
 value = value.toLowerCase();
 
 const filtered = products.filter(p =>
@@ -243,6 +186,16 @@ p.name.toLowerCase().includes(value)
 );
 
 renderProducts(filtered);
+}
+
+/* INIT */
+renderProducts(products);
+updateCart();
+
+</script>
+
+</body>
+</html>
 
 },300);
 }
