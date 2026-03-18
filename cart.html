@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrendWear - Cart</title>
-  <script defer 
+
+<!-- ✅ Plausible -->
+<script defer 
 data-domain="aribarahmanii.github.io" 
 src="https://plausible.io/js/script.js">
 </script>
 
-<style>
-
-<!-- GA4 -->
+<!-- ✅ GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9S5TH4V60W"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-
-gtag('config', 'G-9S5TH4V60W', {
-  debug_mode: true
-});
+gtag('config', 'G-9S5TH4V60W');
 </script>
 
 <style>
@@ -84,6 +82,7 @@ button{
   margin-top:40px;
 }
 </style>
+
 </head>
 
 <body>
@@ -142,7 +141,15 @@ function renderCart(){
 
 /* Remove item */
 function removeItem(index){
-  gtag('event','remove_from_cart');
+
+  if(window.gtag){
+    gtag('event','remove_from_cart');
+  }
+
+  if(window.plausible){
+    plausible('RemoveFromCart');
+  }
+
   cart.splice(index,1);
   localStorage.setItem("trendwear_cart", JSON.stringify(cart));
   renderCart();
@@ -155,13 +162,23 @@ function checkout(){
     return;
   }
 
-  gtag('event','checkout_click');
-  alert("Demo checkout — connect payment gateway later 💳");
+  if(window.gtag){
+    gtag('event','checkout_click');
+  }
+
+  if(window.plausible){
+    plausible('Checkout');
+  }
+
+  window.location.href = "checkout.html";
 }
 
 /* Home */
 function goHome(){
-  gtag('event','continue_shopping_click');
+  if(window.gtag){
+    gtag('event','continue_shopping_click');
+  }
+
   window.location.href = "index.html";
 }
 
