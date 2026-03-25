@@ -135,8 +135,20 @@ if(cart.length === 0){
   return;
 }
 
+// Calculate total
+let total = 0;
+cart.forEach(item=>{
+  total += item.price * (item.qty || 1);
+});
+
+// ✅ Plausible Goal (FINAL PURCHASE)
 if(window.plausible){
-  plausible('OrderPlaced');
+  plausible('Purchase Complete', {
+    props: {
+      items: cart.length,
+      total_amount: total
+    }
+  });
 }
 
 alert("Order placed successfully 🎉");
