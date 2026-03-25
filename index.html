@@ -166,8 +166,14 @@ cart.push({...product, qty:1});
 localStorage.setItem("trendwear_cart", JSON.stringify(cart));
 updateCart();
 
+// ✅ Plausible Goal (Improved)
 if(window.plausible){
-  plausible('AddToCart');
+  plausible('Add to Cart', {
+    props: {
+      product: product.name,
+      price: product.price
+    }
+  });
 }
 
 alert("Added to cart!");
@@ -175,9 +181,18 @@ alert("Added to cart!");
 
 /* BUY NOW */
 function buyNow(id){
+const product = products.find(p=>p.id===id);
+
+// ✅ Plausible Goal (Improved)
 if(window.plausible){
-  plausible('BuyNow');
+  plausible('Buy Now Click', {
+    props: {
+      product: product.name,
+      price: product.price
+    }
+  });
 }
+
 window.location.href = "checkout.html";
 }
 
