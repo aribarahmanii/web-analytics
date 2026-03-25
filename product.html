@@ -105,8 +105,14 @@ let cart = JSON.parse(localStorage.getItem("trendwear_cart")) || [];
 cart.push({...product, qty:1});
 localStorage.setItem("trendwear_cart", JSON.stringify(cart));
 
+// ✅ Plausible: Add to Cart (Improved)
 if(window.plausible){
-  plausible('AddToCart');
+  plausible('Add to Cart', {
+    props: {
+      product: product.name,
+      price: product.price
+    }
+  });
 }
 
 alert("Added to cart!");
