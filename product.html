@@ -88,6 +88,16 @@ if(!product){
   document.getElementById("name").innerText = product.name;
   document.getElementById("price").innerText = "₹" + product.price;
   document.getElementById("img").src = product.img;
+
+  // ✅ Plausible: Product View
+  if(window.plausible){
+    plausible('Product View', {
+      props: {
+        product: product.name,
+        price: product.price
+      }
+    });
+  }
 }
 
 function addToCart(){
