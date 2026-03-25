@@ -142,12 +142,20 @@ function renderCart(){
 /* Remove item */
 function removeItem(index){
 
+  const product = cart[index];
+
   if(window.gtag){
     gtag('event','remove_from_cart');
   }
 
+  // ✅ Plausible (Improved)
   if(window.plausible){
-    plausible('RemoveFromCart');
+    plausible('Remove From Cart', {
+      props: {
+        product: product.name,
+        price: product.price
+      }
+    });
   }
 
   cart.splice(index,1);
@@ -166,8 +174,13 @@ function checkout(){
     gtag('event','checkout_click');
   }
 
+  // ✅ Plausible (Improved)
   if(window.plausible){
-    plausible('Checkout');
+    plausible('Checkout Click', {
+      props: {
+        cart_items: cart.length
+      }
+    });
   }
 
   window.location.href = "checkout.html";
